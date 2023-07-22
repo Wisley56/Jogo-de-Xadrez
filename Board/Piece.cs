@@ -9,9 +9,9 @@ namespace Board
         public int QtMovement { get; protected set; }
         public Tray? Tray { get; protected set; }
 
-        public Piece(Position? position, Color? color, Tray? tray)
+        public Piece(Color? color, Tray? tray)
         {
-            this.Position = position;
+            this.Position = null;
             this.Color = color;
             this.QtMovement = 0;
             this.Tray = tray;

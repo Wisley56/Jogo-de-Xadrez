@@ -17,5 +17,10 @@ namespace Board
         {
             return pieces[line, column];
         }
+        public void changePiece(Piece p, Position pos) // muda a peça de lugar
+        {
+            pieces[pos.Line, pos.Columns] = p;
+            p.Position = pos;
+        }
     }
 }
