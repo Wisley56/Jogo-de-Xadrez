@@ -11,13 +11,13 @@ namespace Xadrez___Console
             {
                 for(int j = 0; j < tab.Columns; j++)
                 {
-                    if(tab.getPiece(i, j) == null)
+                    if(tab.piece(i, j) == null)
                     {
                         Console.Write("- ");
                     }
                     else
                     {
-                        Console.Write(tab.getPiece(i, j) + " ");
+                        Console.Write(tab.piece(i, j) + " ");
                     }
                 }
                 Console.WriteLine();

@@ -8,13 +8,19 @@ namespace Xadrez___Console
     {
         static void Main(string[] args)
         {
-            Tray tab = new Tray(8, 8);
+            try
+            {
+                Tray tab = new Tray(8, 8);
 
-            tab.changePiece(new King(Color.Black, tab), new Position(0, 5));
-            tab.changePiece(new Queen(Color.Black, tab), new Position(1, 3));
-            tab.changePiece(new Pawn(Color.Black, tab), new Position(5, 7));
+                ChessPosition pos = new ChessPosition('c', 7);
+                Console.WriteLine(pos);
 
-            Screen.printBoard(tab);
+                Console.WriteLine(pos.toPosition());
+            }
+            catch(TrayExceptions e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
     }
 }
