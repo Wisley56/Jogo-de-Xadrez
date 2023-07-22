@@ -1,4 +1,7 @@
-﻿namespace Xadrez___Console
+﻿using System;
+using Board;
+
+namespace Xadrez___Console
 {
     internal class Program
     {
