@@ -3,16 +3,16 @@
     internal class Position
     {
         public int Line { get; set; }
-        public int Columns { get; set; }
+        public int Column { get; set; }
 
         public Position(int line, int columns)
         {
             this.Line = line;
-            this.Columns = columns;
+            this.Column = columns;
         }
         public override string ToString()
         {
-            return Line + "," + Columns;
+            return Line + "," + Column;
         }
     }
 }

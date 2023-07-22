@@ -16,5 +16,9 @@ namespace Board
             this.QtMovement = 0;
             this.Tray = tray;
         }
+        public void increaseMovement()
+        {
+            QtMovement++;
+        }
     }
 }

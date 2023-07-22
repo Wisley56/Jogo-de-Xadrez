@@ -19,18 +19,29 @@ namespace Board
         }
         public Piece getPiece( Position pos) //retorna a peça na posicao atual
         {
-            return pieces[pos.Line, pos.Columns];
+            return pieces[pos.Line, pos.Column];
         }
         public void changePiece(Piece p, Position pos) // muda a peça de lugar
         {
             if(existPiece(pos))
                 throw new TrayExceptions("Position occupied!");
-            pieces[pos.Line, pos.Columns] = p;
+            pieces[pos.Line, pos.Column] = p;
             p.Position = pos;
+        }
+        public Piece removePiece(Position pos)
+        {
+            if (getPiece(pos) == null)
+            {
+                return null;
+            }
+            Piece aux = getPiece(pos);
+            aux.Position = null;
+            pieces[pos.Line, pos.Column] = null;
+            return aux;
         }
         public bool validPosition(Position pos) //verificando se a posiçao é valida
         {
-            if(pos.Line < 0 || pos.Line >= Lines || pos.Columns < 0 || pos.Columns >= Columns)
+            if(pos.Line < 0 || pos.Line >= Lines || pos.Column < 0 || pos.Column >= Columns)
                 return false;
             return true;
         }
