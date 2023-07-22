@@ -12,7 +12,7 @@
         }
         public override string ToString()
         {
-            return "Position: " + Line + " ," + Columns;
+            return Line + " ," + Columns;
         }
     }
 }
