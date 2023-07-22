@@ -9,7 +9,8 @@ namespace Xadrez___Console
         {
             for(int i = 0; i < tab.Lines; i++)
             {
-                for(int j = 0; j < tab.Columns; j++)
+                Console.Write(8 - i + " ");
+                for (int j = 0; j < tab.Columns; j++)
                 {
                     if(tab.piece(i, j) == null)
                     {
@@ -17,10 +18,26 @@ namespace Xadrez___Console
                     }
                     else
                     {
-                        Console.Write(tab.piece(i, j) + " ");
+                        printPiece(tab.piece(i, j));
+                        Console.Write(" ");
                     }
                 }
                 Console.WriteLine();
+            }
+            Console.WriteLine("  A B C D E F G H");
+        }
+        public static void printPiece(Piece piece)
+        {
+            if(piece.Color == Color.White)
+            {
+                Console.Write(piece);
+            }
+            else
+            {
+                ConsoleColor aux = Console.ForegroundColor;
+                Console.ForegroundColor = ConsoleColor.Black;
+                Console.Write(piece);
+                Console.ForegroundColor = aux;
             }
         }
     }
