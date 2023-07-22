@@ -7,7 +7,8 @@ namespace Xadrez___Console
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
+            Tray tab = new Tray(8, 8);
+            Screen.PrintBoard(tab);
         }
     }
 }

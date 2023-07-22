@@ -13,5 +13,9 @@ namespace Board
             this.Columns = columns;
             pieces = new Piece[Lines, Columns];
         }
+        public Piece getPiece(int line, int column)
+        {
+            return pieces[line, column];
+        }
     }
 }
