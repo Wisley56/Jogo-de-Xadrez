@@ -9,5 +9,9 @@ namespace Chess
         {
             return "H";
         }
+        public override bool[,] possiblesMoves()
+        {
+            bool[,] mat = new bool[Tray.Lines, Tray.Columns];
+        }
     }
 }

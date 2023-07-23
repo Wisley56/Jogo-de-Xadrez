@@ -2,7 +2,7 @@
 
 namespace Board
 {
-    internal class Piece // classe peças
+    internal abstract class Piece // classe peças
     {
         public Position? Position { get; set; }
         public Color? Color { get; protected set; }
@@ -20,5 +20,26 @@ namespace Board
         {
             QtMovement++;
         }
+        public bool existMovesPossibles()
+        {
+            bool[,] mat = possiblesMoves();
+            for(int i = 0; i < Tray.Lines; ++)
+            {
+                for(int j = 0; j < Tray.Columns; j++)
+                {
+                    if (mat[i, j])
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+        public bool canMoveTo(Position pos)
+        {
+            return possiblesMoves()[pos.Line, pos.Column];
+        }
+        public abstract bool[,] possiblesMoves();
+
     }
 }

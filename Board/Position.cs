@@ -10,6 +10,11 @@
             this.Line = line;
             this.Column = columns;
         }
+        public void setPositon(int line, int column)
+        {
+            this.Line = line;
+            this.Column = column;
+        }
         public override string ToString()
         {
             return Line + "," + Column;
