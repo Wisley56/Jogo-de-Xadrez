@@ -97,9 +97,9 @@ namespace Chess
         }
         private void positionInitial() //metodo para iniciar as peças nas devidas posiçoes
         {
-            //putNewPart('a', 2, new Pawn(Color.White, Tab));
-            //putNewPart('b',2, new Pawn(Color.White, Tab));
-           // putNewPart('c', 2, new Pawn(Color.White, Tab));
+            putNewPart('a', 2, new Pawn(Color.White, Tab));
+            putNewPart('b',2, new Pawn(Color.White, Tab));
+            putNewPart('c', 2, new Pawn(Color.White, Tab));
             putNewPart('d', 2, new Pawn(Color.White, Tab));
             putNewPart('e', 2, new Pawn(Color.White, Tab));
             putNewPart('f', 2, new Pawn(Color.White, Tab));
@@ -114,9 +114,9 @@ namespace Chess
             putNewPart('d', 1, new Queen(Color.White, Tab));
             putNewPart('e', 1, new King(Color.White, Tab));
 
-            //putNewPart('a', 7, new Pawn(Color.Black, Tab));
-           // putNewPart('b', 7, new Pawn(Color.Black, Tab));
-            //putNewPart('c', 7, new Pawn(Color.Black, Tab));
+            putNewPart('a', 7, new Pawn(Color.Black, Tab));
+            putNewPart('b', 7, new Pawn(Color.Black, Tab));
+            putNewPart('c', 7, new Pawn(Color.Black, Tab));
             putNewPart('d', 7, new Pawn(Color.Black, Tab));
             putNewPart('e', 7, new Pawn(Color.Black, Tab));
             putNewPart('f', 7, new Pawn(Color.Black, Tab));

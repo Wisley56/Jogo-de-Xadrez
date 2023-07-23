@@ -18,6 +18,51 @@ namespace Chess
         {
             bool[,] mat = new bool[Tray.Lines, Tray.Columns];
             Position pos = new Position(0, 0);
+
+            //verificando noroeste
+            pos.setPositon(Position.Line - 1, Position.Column - 1);
+            while (Tray.validPosition(pos) && canMove(pos))
+            {
+                mat[pos.Line, pos.Column] = true;
+                if (Tray.getPiece(pos) != null && Tray.getPiece(pos).Color != Color)
+                {
+                    break;
+                }
+                pos.setPositon(pos.Line - 1, pos.Column - 1);
+            }
+            //verificando nordeste
+            pos.setPositon(Position.Line - 1, Position.Column + 1);
+            while (Tray.validPosition(pos) && canMove(pos))
+            {
+                mat[pos.Line, pos.Column] = true;
+                if (Tray.getPiece(pos) != null && Tray.getPiece(pos).Color != Color)
+                {
+                    break;
+                }
+                pos.setPositon(pos.Line - 1, pos.Column + 1);
+            }
+            //verificando sudeste
+            pos.setPositon(Position.Line + 1, Position.Column + 1);
+            while (Tray.validPosition(pos) && canMove(pos))
+            {
+                mat[pos.Line, pos.Column] = true;
+                if (Tray.getPiece(pos) != null && Tray.getPiece(pos).Color != Color)
+                {
+                    break;
+                }
+                pos.setPositon(pos.Line +1, pos.Column + 1);
+            }
+            //verificando sudoeste
+            pos.setPositon(Position.Line + 1, Position.Column - 1);
+            while (Tray.validPosition(pos) && canMove(pos))
+            {
+                mat[pos.Line, pos.Column] = true;
+                if (Tray.getPiece(pos) != null && Tray.getPiece(pos).Color != Color)
+                {
+                    break;
+                }
+                pos.setPositon(pos.Line + 1, pos.Column - 1);
+            }
             return mat;
         }
     }
