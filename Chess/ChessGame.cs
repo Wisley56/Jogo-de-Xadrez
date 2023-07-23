@@ -1,5 +1,6 @@
 ﻿using System;
 using Board;
+using System.Collections.Generic;
 
 namespace Chess
 {
@@ -8,13 +9,17 @@ namespace Chess
         public Tray Tab { get; private set; }
         public int Shift { get; private set; } //turno
         public Color PlayerCurrent { get; private set; } //cor dojogador atual
-        public bool End { get; private set; }
+        public bool End { get; private set; } //para dizer que o jogo acabou
+        private HashSet<Piece> Pieces;
+        private HashSet<Piece> Captureds;
 
         public ChessGame()
         {
             Tab = new Tray(8, 8);
             Shift = 1;
             PlayerCurrent = Color.White;
+            Pieces = new HashSet<Piece>();
+            Captureds = new HashSet<Piece>();
             positionInitial();
             End = false;
         }
@@ -25,6 +30,8 @@ namespace Chess
             p.increaseMovement(); //incrementa o movimenta da peça
             Piece capturedPiece = Tab.removePiece(destiny);//captura a peça da posiçao de destino (se houver)
             Tab.changePiece(p, destiny); //coloca a peça p na posiçao de destino
+            if(capturedPiece != null)
+                Captureds.Add(capturedPiece);
         }
         public void performsMoves(Position origin, Position destiny) //realiza a jogada na partida
         {
@@ -54,41 +61,67 @@ namespace Chess
             else
                 PlayerCurrent = Color.White;
         }
+        public void putNewPart(char column, int line, Piece piece) //metodo para colocar nova peça e adicionar no conjunto
+        {
+            Tab.changePiece(piece, new ChessPosition(column, line).toPosition());
+            Pieces.Add(piece);
+        }
         private void positionInitial() //metodo para iniciar as peças nas devidas posiçoes
         {
-            Tab.changePiece(new Pawn(Color.White, Tab), new ChessPosition('a', 2).toPosition());
-            Tab.changePiece(new Pawn(Color.White, Tab), new ChessPosition('b', 2).toPosition());
-            Tab.changePiece(new Pawn(Color.White, Tab), new ChessPosition('c', 2).toPosition());
-            Tab.changePiece(new Pawn(Color.White, Tab), new ChessPosition('d', 2).toPosition());
-            Tab.changePiece(new Pawn(Color.White, Tab), new ChessPosition('e', 2).toPosition());
-            Tab.changePiece(new Pawn(Color.White, Tab), new ChessPosition('f', 2).toPosition());
-            Tab.changePiece(new Pawn(Color.White, Tab), new ChessPosition('g', 2).toPosition());
-            Tab.changePiece(new Pawn(Color.White, Tab), new ChessPosition('h', 2).toPosition());
-            Tab.changePiece(new Tower(Color.White, Tab), new ChessPosition('a', 1).toPosition());
-            Tab.changePiece(new Tower(Color.White, Tab), new ChessPosition('h', 1).toPosition());
-            Tab.changePiece(new Horse(Color.White, Tab), new ChessPosition('b', 1).toPosition());
-            Tab.changePiece(new Horse(Color.White, Tab), new ChessPosition('g', 1).toPosition());
-            Tab.changePiece(new Bishop(Color.White, Tab), new ChessPosition('c', 1).toPosition());
-            Tab.changePiece(new Bishop(Color.White, Tab), new ChessPosition('f', 1).toPosition());
-            Tab.changePiece(new Queen(Color.White, Tab), new ChessPosition('d', 1).toPosition());
-            Tab.changePiece(new King(Color.White, Tab), new ChessPosition('e', 1).toPosition());
+            putNewPart('a', 2, new Pawn(Color.White, Tab));
+            putNewPart('b',2, new Pawn(Color.White, Tab));
+            putNewPart('c', 2, new Pawn(Color.White, Tab));
+            putNewPart('d', 2, new Pawn(Color.White, Tab));
+            putNewPart('e', 2, new Pawn(Color.White, Tab));
+            putNewPart('f', 2, new Pawn(Color.White, Tab));
+            putNewPart('g', 2, new Pawn(Color.White, Tab));
+            putNewPart('h', 2, new Pawn(Color.White, Tab));
+            putNewPart('a', 1, new Tower(Color.White, Tab));
+            putNewPart('h', 1, new Tower(Color.White, Tab));
+            putNewPart('b', 1, new Horse(Color.White, Tab));
+            putNewPart('g', 1, new Horse(Color.White, Tab));
+            putNewPart('c', 1, new Bishop(Color.White, Tab));
+            putNewPart('f', 1, new Bishop(Color.White, Tab));
+            putNewPart('d', 1, new Queen(Color.White, Tab));
+            putNewPart('e', 1, new King(Color.White, Tab));
 
-            Tab.changePiece(new Pawn(Color.Black, Tab), new ChessPosition('a', 7).toPosition());
-            Tab.changePiece(new Pawn(Color.Black, Tab), new ChessPosition('b', 7).toPosition());
-            Tab.changePiece(new Pawn(Color.Black, Tab), new ChessPosition('c', 7).toPosition());
-            Tab.changePiece(new Pawn(Color.Black, Tab), new ChessPosition('d', 7).toPosition());
-            Tab.changePiece(new Pawn(Color.Black, Tab), new ChessPosition('e', 7).toPosition());
-            Tab.changePiece(new Pawn(Color.Black, Tab), new ChessPosition('f', 7).toPosition());
-            Tab.changePiece(new Pawn(Color.Black, Tab), new ChessPosition('g', 7).toPosition());
-            Tab.changePiece(new Pawn(Color.Black, Tab), new ChessPosition('h', 7).toPosition());
-            Tab.changePiece(new Tower(Color.Black, Tab), new ChessPosition('a', 8).toPosition());
-            Tab.changePiece(new Tower(Color.Black, Tab), new ChessPosition('h', 8).toPosition());
-            Tab.changePiece(new Horse(Color.Black, Tab), new ChessPosition('b', 8).toPosition());
-            Tab.changePiece(new Horse(Color.Black, Tab), new ChessPosition('g', 8).toPosition());
-            Tab.changePiece(new Bishop(Color.Black, Tab), new ChessPosition('c', 8).toPosition());
-            Tab.changePiece(new Bishop(Color.Black, Tab), new ChessPosition('f', 8).toPosition());
-            Tab.changePiece(new Queen(Color.Black, Tab), new ChessPosition('d', 8).toPosition());
-            Tab.changePiece(new King(Color.Black, Tab), new ChessPosition('e', 8).toPosition());
+            putNewPart('a', 7, new Pawn(Color.Black, Tab));
+            putNewPart('b', 7, new Pawn(Color.Black, Tab));
+            putNewPart('c', 7, new Pawn(Color.Black, Tab));
+            putNewPart('d', 7, new Pawn(Color.Black, Tab));
+            putNewPart('e', 7, new Pawn(Color.Black, Tab));
+            putNewPart('f', 7, new Pawn(Color.Black, Tab));
+            putNewPart('g', 7, new Pawn(Color.Black, Tab));
+            putNewPart('h', 7, new Pawn(Color.Black, Tab));
+            putNewPart('a', 8, new Tower(Color.Black, Tab));
+            putNewPart('h', 8, new Tower(Color.Black, Tab));
+            putNewPart('b', 8, new Horse(Color.Black, Tab));
+            putNewPart('g', 8, new Horse(Color.Black, Tab));
+            putNewPart('c', 8, new Bishop(Color.Black, Tab));
+            putNewPart('f', 8, new Bishop(Color.Black, Tab));
+            putNewPart('d', 8, new Queen(Color.Black, Tab));
+            putNewPart('e', 8, new King(Color.Black, Tab));
+        }
+        public HashSet<Piece> capturedPieces(Color c) //retorna o conjunto de peças capturadas em jogo da cor escolhida
+        {
+            HashSet<Piece> aux = new HashSet<Piece>();
+            foreach(Piece x in Captureds)
+            {
+                if (x.Color == c)
+                    aux.Add(x);
+            }
+            return aux;
+        }
+        public HashSet<Piece> PiecesInGame(Color c) //retorna o conjunto de peças em jogo
+        {
+            HashSet<Piece> aux = new HashSet<Piece>();
+            foreach (Piece x in Pieces)
+            {
+                if (x.Color == c)
+                    aux.Add(x);
+            }
+            aux.ExceptWith(capturedPieces(c));
+            return aux;
         }
     }
 }
