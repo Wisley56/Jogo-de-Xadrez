@@ -19,13 +19,15 @@ namespace Chess
         {
             bool[,] mat = new bool[Tray.Lines, Tray.Columns];
             Position pos = new Position(0, 0);
-            if()
+            pos.setPositon(Position.Line - 2, Position.Column);
+             if(QtMovement == 0)
+             {
+               // mat[pos.Line, pos.Column] = true;
+             }
+            
 
             return mat;
         }
-        public int getShift( ChessGame game)
-        {
-            return game.Shift;
-        }
+        
     }
 }

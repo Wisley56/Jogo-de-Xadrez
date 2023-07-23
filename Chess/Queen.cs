@@ -12,6 +12,8 @@ namespace Chess
         public override bool[,] possiblesMoves()
         {
             bool[,] mat = new bool[Tray.Lines, Tray.Columns];
+            Position pos = new Position(0, 0);
+            return mat;
         }
     }
 }

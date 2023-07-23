@@ -19,8 +19,9 @@ namespace Chess
         {
             bool[,] mat = new bool[Tray.Lines, Tray.Columns];
             Position pos = new Position(0, 0);
+
             //verificando acima
-            pos.setPositon(pos.Line - 1, pos.Column);
+            pos.setPositon(Position.Line - 1, Position.Column);
             while(Tray.validPosition(pos) && canMove(pos))
             {
                 mat[pos.Line, pos.Column] = true;
@@ -31,7 +32,7 @@ namespace Chess
                 pos.Line = pos.Line - 1;
             }
             //verificando abaixo
-            pos.setPositon(pos.Line + 1, pos.Column);
+            pos.setPositon(Position.Line + 1, Position.Column);
             while (Tray.validPosition(pos) && canMove(pos))
             {
                 mat[pos.Line, pos.Column] = true;
@@ -42,7 +43,7 @@ namespace Chess
                 pos.Line = pos.Line + 1;
             }
             //verificando direita
-            pos.setPositon(pos.Line, pos.Column + 1);
+            pos.setPositon(Position.Line, Position.Column + 1);
             while (Tray.validPosition(pos) && canMove(pos))
             {
                 mat[pos.Line, pos.Column] = true;
@@ -53,7 +54,7 @@ namespace Chess
                 pos.Column = pos.Column + 1;
             }
             //verificando esquerda
-            pos.setPositon(pos.Line, pos.Column - 1);
+            pos.setPositon(Position.Line, Position.Column - 1);
             while (Tray.validPosition(pos) && canMove(pos))
             {
                 mat[pos.Line, pos.Column] = true;

@@ -9,8 +9,7 @@ namespace Xadrez___Console
         static void Main(string[] args)
         {
             Console.BackgroundColor = ConsoleColor.Blue;
-            try
-            {
+
                 ChessGame game = new ChessGame();
 
                 while(!game.End)
@@ -18,10 +17,7 @@ namespace Xadrez___Console
                     try
                     {
                         Console.Clear();
-                        Screen.printBoard(game.Tab);
-                        Console.WriteLine();
-                        Console.WriteLine("Shift: " + game.Shift);
-                        Console.WriteLine("Waiting for move: " + game.PlayerCurrent);
+                        Screen.printGame(game);
 
                         Console.WriteLine();
 
@@ -48,13 +44,6 @@ namespace Xadrez___Console
                         Console.ReadLine();
                     }
                 }
-                
-                
-            }
-            catch(TrayExceptions e)
-            {
-                Console.WriteLine(e.Message);
-            }
         }
     }
 }

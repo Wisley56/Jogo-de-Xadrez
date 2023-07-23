@@ -19,49 +19,49 @@ namespace Chess
             bool[,] mat = new bool[Tray.Lines, Tray.Columns];
             Position pos = new Position(0, 0);
             //verificando acima
-            pos.setPositon(pos.Line - 1, pos.Column);
+            pos.setPositon(Position.Line - 1, Position.Column);
             if(Tray.validPosition(pos) && canMove(pos))
             {
                 mat[pos.Line, pos.Column] = true;
             }
             //verificando nordeste
-            pos.setPositon(pos.Line - 1, pos.Column + 1);
+            pos.setPositon(Position.Line - 1, Position.Column + 1);
             if (Tray.validPosition(pos) && canMove(pos))
             {
                 mat[pos.Line, pos.Column] = true;
             }
             //verificando direita
-            pos.setPositon(pos.Line, pos.Column + 1);
+            pos.setPositon(Position.Line, Position.Column + 1);
             if (Tray.validPosition(pos) && canMove(pos))
             {
                 mat[pos.Line, pos.Column] = true;
             }
             //verificando sudeste
-            pos.setPositon(pos.Line + 1, pos.Column + 1);
+            pos.setPositon(Position.Line + 1, Position.Column + 1);
             if (Tray.validPosition(pos) && canMove(pos))
             {
                 mat[pos.Line, pos.Column] = true;
             }
             //verificando abaixo
-            pos.setPositon(pos.Line + 1, pos.Column);
+            pos.setPositon(Position.Line + 1, Position.Column);
             if (Tray.validPosition(pos) && canMove(pos))
             {
                 mat[pos.Line, pos.Column] = true;
             }
             //verificando sudoeste
-            pos.setPositon(pos.Line + 1, pos.Column - 1);
+            pos.setPositon(Position.Line + 1, Position.Column - 1);
             if (Tray.validPosition(pos) && canMove(pos))
             {
                 mat[pos.Line, pos.Column] = true;
             }
             //verificando esquerda
-            pos.setPositon(pos.Line, pos.Column - 1);
+            pos.setPositon(Position.Line, Position.Column - 1);
             if (Tray.validPosition(pos) && canMove(pos))
             {
                 mat[pos.Line, pos.Column] = true;
             }
             //verificando noroeste
-            pos.setPositon(pos.Line - 1, pos.Column - 1);
+            pos.setPositon(Position.Line - 1, Position.Column - 1);
             if (Tray.validPosition(pos) && canMove(pos))
             {
                 mat[pos.Line, pos.Column] = true;

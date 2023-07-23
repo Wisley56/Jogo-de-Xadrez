@@ -27,7 +27,7 @@ namespace Board
         public bool existMovesPossibles()
         {
             bool[,] mat = possiblesMoves();
-            for(int i = 0; i < Tray.Lines; ++)
+            for(int i = 0; i < Tray.Lines; i++)
             {
                 for(int j = 0; j < Tray.Columns; j++)
                 {

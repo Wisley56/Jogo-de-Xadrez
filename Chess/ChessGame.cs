@@ -37,7 +37,7 @@ namespace Chess
                 Captureds.Add(capturedPiece);
             return capturedPiece;
         }
-        public void undoMove(Position origin, Position destiny, Piece capturedPiece)
+        public void undoMove(Position origin, Position destiny, Piece capturedPiece) //desfaz o movimento
         {
             Piece p = Tab.removePiece(destiny);
             p.decrementMovement();
@@ -56,8 +56,17 @@ namespace Chess
                 undoMove(origin, destiny, capturedPiece);
                 throw new TrayExceptions("You cannot put yourself in check!");
             }
-            Shift++;
-            playerChange();
+            if (isInCheck(rivalColor(PlayerCurrent))) //verifica se o jogador adversario esta em xeque
+                Check = true;
+            else
+                Check = false;
+            if (checkmateTest(rivalColor(PlayerCurrent))) //verifica se o jogador adversario esta em xequemate para finalizar o jogo
+                End = true;
+            else
+            {
+                Shift++;
+                playerChange();
+            }
 
         }
         public void validateOriginPosition(Position pos)
@@ -88,9 +97,9 @@ namespace Chess
         }
         private void positionInitial() //metodo para iniciar as peças nas devidas posiçoes
         {
-            putNewPart('a', 2, new Pawn(Color.White, Tab));
-            putNewPart('b',2, new Pawn(Color.White, Tab));
-            putNewPart('c', 2, new Pawn(Color.White, Tab));
+            //putNewPart('a', 2, new Pawn(Color.White, Tab));
+            //putNewPart('b',2, new Pawn(Color.White, Tab));
+           // putNewPart('c', 2, new Pawn(Color.White, Tab));
             putNewPart('d', 2, new Pawn(Color.White, Tab));
             putNewPart('e', 2, new Pawn(Color.White, Tab));
             putNewPart('f', 2, new Pawn(Color.White, Tab));
@@ -105,9 +114,9 @@ namespace Chess
             putNewPart('d', 1, new Queen(Color.White, Tab));
             putNewPart('e', 1, new King(Color.White, Tab));
 
-            putNewPart('a', 7, new Pawn(Color.Black, Tab));
-            putNewPart('b', 7, new Pawn(Color.Black, Tab));
-            putNewPart('c', 7, new Pawn(Color.Black, Tab));
+            //putNewPart('a', 7, new Pawn(Color.Black, Tab));
+           // putNewPart('b', 7, new Pawn(Color.Black, Tab));
+            //putNewPart('c', 7, new Pawn(Color.Black, Tab));
             putNewPart('d', 7, new Pawn(Color.Black, Tab));
             putNewPart('e', 7, new Pawn(Color.Black, Tab));
             putNewPart('f', 7, new Pawn(Color.Black, Tab));
@@ -171,6 +180,32 @@ namespace Chess
                     return true;
             }
             return false;
+        }
+        public bool checkmateTest(Color c)
+        {
+            if (!isInCheck(c))
+                return false;
+            foreach(Piece x in PiecesInGame(c))
+            {
+                bool[,] mat = x.possiblesMoves();
+                for(int i = 0; i < Tab.Lines; i++)
+                {
+                    for(int j = 0; j < Tab.Columns; j++)
+                    {
+                        if (mat[i, j])
+                        {
+                            Position origin = x.Position;
+                            Position destiny = new Position(i, j);
+                            Piece capturedPiece = performMovement(origin, destiny);
+                            bool checkTest = isInCheck(c);
+                            undoMove(origin, destiny, capturedPiece);
+                            if (!checkTest)
+                                return false;
+                        }
+                    }
+                }
+            }
+            return true;
         }
     }
 }

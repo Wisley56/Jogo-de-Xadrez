@@ -9,9 +9,16 @@ namespace Chess
         {
             return "H";
         }
+        public bool canMove(Position pos) //verifica se pode mover
+        {
+            Piece p = Tray.getPiece(pos);
+            return p == null || p.Color != this.Color;
+        }
         public override bool[,] possiblesMoves()
         {
             bool[,] mat = new bool[Tray.Lines, Tray.Columns];
+            Position pos = new Position(0, 0);
+            return mat;
         }
     }
 }

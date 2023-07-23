@@ -12,10 +12,18 @@ namespace Xadrez___Console
             Console.WriteLine();
             printCapturedPieces(game);
             Console.WriteLine();
-            Console.WriteLine("Shift: " + game.Shift);
-            Console.WriteLine("Waiting for move: " + game.PlayerCurrent);
-            if(game.Check)
-                Console.WriteLine("CHECK!!");
+            if (!game.End)
+            {
+                Console.WriteLine("Shift: " + game.Shift);
+                Console.WriteLine("Waiting for move: " + game.PlayerCurrent);
+                if (game.Check)
+                    Console.WriteLine("CHECK!!");
+            }
+            else
+            {
+                Console.WriteLine("CHECKMATE!!");
+                Console.WriteLine("Wineer is " + game.PlayerCurrent);
+            }
         }
         public static void printBoard(Tray tab) //imprime o tabuleiro
         {
@@ -28,7 +36,7 @@ namespace Xadrez___Console
                 }
                 Console.WriteLine();
             }
-            Console.WriteLine("  A B C D E F G H");
+            Console.WriteLine("  a b c d e f g h");
         }
         public static void printBoard(Tray tab, bool[,] possiblePositions) //imprime o tabuleiro com as possibilidades de jogada
         {
@@ -48,7 +56,7 @@ namespace Xadrez___Console
                 }
                 Console.WriteLine();
             }
-            Console.WriteLine("  A B C D E F G H");
+            Console.WriteLine("  a b c d e f g h");
             Console.BackgroundColor = originalBackground;
         }
         public static void printPiece(Piece piece) //imprime uma peça
