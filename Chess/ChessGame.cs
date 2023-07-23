@@ -1,6 +1,7 @@
 ﻿using System;
 using Board;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
 
 namespace Chess
 {
@@ -10,8 +11,9 @@ namespace Chess
         public int Shift { get; private set; } //turno
         public Color PlayerCurrent { get; private set; } //cor dojogador atual
         public bool End { get; private set; } //para dizer que o jogo acabou
-        private HashSet<Piece> Pieces;
-        private HashSet<Piece> Captureds;
+        private HashSet<Piece> Pieces; //conjunto de peças
+        private HashSet<Piece> Captureds; //conjuntos de capturadas
+        public bool Check { get; private set; } //variavel de xeque
 
         public ChessGame()
         {
@@ -20,11 +22,12 @@ namespace Chess
             PlayerCurrent = Color.White;
             Pieces = new HashSet<Piece>();
             Captureds = new HashSet<Piece>();
+            Check = false;
             positionInitial();
             End = false;
         }
 
-        public void performMovement(Position origin, Position destiny) //executa os movimentos
+        public Piece performMovement(Position origin, Position destiny) //executa os movimentos
         {
             Piece p = Tab.removePiece(origin); //remove a peça de origem
             p.increaseMovement(); //incrementa o movimenta da peça
@@ -32,10 +35,27 @@ namespace Chess
             Tab.changePiece(p, destiny); //coloca a peça p na posiçao de destino
             if(capturedPiece != null)
                 Captureds.Add(capturedPiece);
+            return capturedPiece;
+        }
+        public void undoMove(Position origin, Position destiny, Piece capturedPiece)
+        {
+            Piece p = Tab.removePiece(destiny);
+            p.decrementMovement();
+            if (capturedPiece != null)
+            {
+                Tab.changePiece(capturedPiece, destiny);
+                Captureds.Remove(capturedPiece);
+            }
+            Tab.changePiece(p, origin);
         }
         public void performsMoves(Position origin, Position destiny) //realiza a jogada na partida
         {
-            performMovement(origin, destiny);
+            Piece capturedPiece = performMovement(origin, destiny);
+            if(isInCheck(PlayerCurrent))
+            {
+                undoMove(origin, destiny, capturedPiece);
+                throw new TrayExceptions("You cannot put yourself in check!");
+            }
             Shift++;
             playerChange();
 
@@ -122,6 +142,35 @@ namespace Chess
             }
             aux.ExceptWith(capturedPieces(c));
             return aux;
+        }
+        private Color rivalColor(Color c) //descobrindo a cor da peça adversaria
+        {
+            if (c == Color.Black)
+                return Color.White;
+            else
+                return Color.Black;
+        }
+        private Piece king(Color c)
+        {
+            foreach(Piece x in PiecesInGame(c))
+            {
+                if (x is King)
+                    return x;
+            }
+            return null;
+        }
+        public bool isInCheck(Color c) //testando se o rei da cor 'c' esta em xeque
+        {
+            Piece K = king(c);
+            if (K == null)
+                throw new TrayExceptions("No color king " + c + " in board!");
+            foreach(Piece x in PiecesInGame(rivalColor(c)))
+            {
+                bool[,] mat = x.possiblesMoves();
+                if (mat[K.Position.Line, K.Position.Column])
+                    return true;
+            }
+            return false;
         }
     }
 }
