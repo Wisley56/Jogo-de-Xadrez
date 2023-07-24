@@ -4,7 +4,11 @@ namespace Chess
 {
     internal class Pawn : Piece //peão e suas propriedades
     {
-        public Pawn(Color color, Tray tray) : base(color, tray) { }
+        private ChessGame game;
+        public Pawn(Color color, Tray tray, ChessGame game) : base(color, tray)
+        {
+            this.game = game;
+        }
         public override string ToString()
         {
             return "P";
@@ -46,6 +50,18 @@ namespace Chess
                 {
                     mat[pos.Line, pos.Column] = true;
                 }
+
+                //JOGADA ESPECIAL: EN PASSANT
+
+                if(Position.Line == 3)//verificando se as peças brancas podem realizar a jogada especial
+                {
+                    Position leftP = new Position(Position.Line, Position.Column - 1);
+                    if(Tray.validPosition(leftP) && canMove(leftP) && game.vulnerableEnPassant == Tray.getPiece(leftP))
+                        mat[leftP.Line - 1, leftP.Column] = true;
+                    Position rightP = new Position(Position.Line, Position.Column + 1);
+                    if (Tray.validPosition(rightP) && canMove(rightP) && game.vulnerableEnPassant == Tray.getPiece(rightP))
+                        mat[rightP.Line - 1, rightP.Column] = true;
+                }
              }
             else
             {
@@ -69,6 +85,18 @@ namespace Chess
                 if (Tray.validPosition(pos) && canMove(pos))
                 {
                     mat[pos.Line, pos.Column] = true;
+                }
+
+                //JOGADA ESPECIAL: EN PASSANT
+
+                if (Position.Line == 4)//verificando se as peças pretas podem realizar a jogada especial
+                {
+                    Position leftP = new Position(Position.Line, Position.Column - 1);
+                    if (Tray.validPosition(leftP) && canMove(leftP) && game.vulnerableEnPassant == Tray.getPiece(leftP))
+                        mat[leftP.Line + 1, leftP.Column ] = true;
+                    Position rightP = new Position(Position.Line, Position.Column + 1);
+                    if (Tray.validPosition(rightP) && canMove(rightP) && game.vulnerableEnPassant == Tray.getPiece(rightP))
+                        mat[rightP.Line + 1, rightP.Column] = true;
                 }
             }
             return mat;

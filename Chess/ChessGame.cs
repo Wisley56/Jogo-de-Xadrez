@@ -15,6 +15,7 @@ namespace Chess
         private HashSet<Piece> Pieces; //conjunto de peças
         private HashSet<Piece> Captureds; //conjuntos de capturadas
         public bool Check { get; private set; } //variavel de xeque
+        public Piece vulnerableEnPassant { get; private set; }
 
         public ChessGame()
         {
@@ -26,6 +27,7 @@ namespace Chess
             Check = false;
             positionInitial();
             End = false;
+            vulnerableEnPassant = null;
         }
 
         public Piece performMovement(Position origin, Position destiny) //executa os movimentos
@@ -58,6 +60,23 @@ namespace Chess
                 T.increaseMovement();
                 Tab.changePiece(T, destinyT);
             }
+
+            //en passant
+            if(p is Pawn)
+            {
+                if(origin.Column != destiny.Column && capturedPiece == null) //ocorreu o en passant
+                {
+                    Position posP;
+                    if (p.Color == Color.White)
+                        posP = new Position(destiny.Line + 1, destiny.Column);
+
+                    else
+                        posP = new Position(destiny.Line - 1, destiny.Column);
+                    capturedPiece = Tab.removePiece(posP);
+                    Captureds.Add(capturedPiece);
+                }
+            }
+
             return capturedPiece;
         }
         public void undoMove(Position origin, Position destiny, Piece capturedPiece) //desfaz o movimento
@@ -91,6 +110,22 @@ namespace Chess
                 T.increaseMovement();
                 Tab.changePiece(T, originT);
             }
+
+            //en passant
+            if(p is Pawn)
+            {
+                if(origin.Column != destiny.Column && capturedPiece == vulnerableEnPassant)
+                {
+                    Piece pawn = Tab.removePiece(destiny);
+                    Position posP;
+                    if (p.Color == Color.White)
+                        posP = new Position(3, destiny.Column);
+                    else
+                        posP = new Position(4, destiny.Column);
+
+                    Tab.changePiece(pawn, posP);
+                }
+            }
         }
         public void performsMoves(Position origin, Position destiny) //realiza a jogada na partida
         {
@@ -118,6 +153,14 @@ namespace Chess
                 playerChange();
             }
 
+            Piece p = Tab.getPiece(destiny); //peça movida
+
+            //JOGADA ESPECIAL: EN PASANT
+
+            if (p is Pawn && (destiny.Line == origin.Line - 2 || destiny.Line == origin.Line + 2))
+                vulnerableEnPassant = p;
+            else
+                vulnerableEnPassant = null;
         }
         public void validateOriginPosition(Position pos)
         {
@@ -148,14 +191,14 @@ namespace Chess
         private void positionInitial() //metodo para iniciar as peças nas devidas posiçoes
         { 
 
-            putNewPart('a', 2, new Pawn(Color.White, Tab));
-            putNewPart('b',2, new Pawn(Color.White, Tab));
-            putNewPart('c', 2, new Pawn(Color.White, Tab));
-            putNewPart('d', 2, new Pawn(Color.White, Tab));
-            putNewPart('e', 2, new Pawn(Color.White, Tab));
-            putNewPart('f', 2, new Pawn(Color.White, Tab));
-            putNewPart('g', 2, new Pawn(Color.White, Tab));
-            putNewPart('h', 2, new Pawn(Color.White, Tab));
+            putNewPart('a', 2, new Pawn(Color.White, Tab, this));
+            putNewPart('b',2, new Pawn(Color.White, Tab, this));
+            putNewPart('c', 2, new Pawn(Color.White, Tab, this));
+            putNewPart('d', 2, new Pawn(Color.White, Tab, this));
+            putNewPart('e', 2, new Pawn(Color.White, Tab, this));
+            putNewPart('f', 2, new Pawn(Color.White, Tab, this));
+            putNewPart('g', 2, new Pawn(Color.White, Tab, this));
+            putNewPart('h', 2, new Pawn(Color.White, Tab, this));
             putNewPart('a', 1, new Tower(Color.White, Tab));
             putNewPart('h', 1, new Tower(Color.White, Tab));
             putNewPart('b', 1, new Horse(Color.White, Tab));
@@ -165,14 +208,14 @@ namespace Chess
             putNewPart('d', 1, new Queen(Color.White, Tab));
             putNewPart('e', 1, new King(Color.White, Tab, this));
 
-            putNewPart('a', 7, new Pawn(Color.Black, Tab));
-            putNewPart('b', 7, new Pawn(Color.Black, Tab));
-            putNewPart('c', 7, new Pawn(Color.Black, Tab));
-            putNewPart('d', 7, new Pawn(Color.Black, Tab));
-            putNewPart('e', 7, new Pawn(Color.Black, Tab));
-            putNewPart('f', 7, new Pawn(Color.Black, Tab));
-            putNewPart('g', 7, new Pawn(Color.Black, Tab));
-            putNewPart('h', 7, new Pawn(Color.Black, Tab));
+            putNewPart('a', 7, new Pawn(Color.Black, Tab, this));
+            putNewPart('b', 7, new Pawn(Color.Black, Tab, this));
+            putNewPart('c', 7, new Pawn(Color.Black, Tab, this));
+            putNewPart('d', 7, new Pawn(Color.Black, Tab, this));
+            putNewPart('e', 7, new Pawn(Color.Black, Tab, this));
+            putNewPart('f', 7, new Pawn(Color.Black, Tab, this));
+            putNewPart('g', 7, new Pawn(Color.Black, Tab, this));
+            putNewPart('h', 7, new Pawn(Color.Black, Tab, this));
             putNewPart('a', 8, new Tower(Color.Black, Tab));
             putNewPart('h', 8, new Tower(Color.Black, Tab));
             putNewPart('b', 8, new Horse(Color.Black, Tab));
