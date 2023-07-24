@@ -4,7 +4,11 @@ namespace Chess
 {
     internal class King : Piece //rei e suas propriedades
     {
-        public King(Color color, Tray tray) : base(color, tray) { }
+        private ChessGame game;
+        public King(Color color, Tray tray, ChessGame game) : base(color, tray)
+        {
+            this.game = game;
+        }
         public override string ToString()
         {
             return "K";
@@ -13,6 +17,11 @@ namespace Chess
         {
             Piece p = Tray.getPiece(pos);
             return p == null || p.Color != this.Color;
+        }
+        private bool rookTest(Position pos)
+        {
+            Piece p = Tray.getPiece(pos);
+            return p != null && p is Tower && p.Color == Color && p.QtMovement == 0;
         }
         public override bool[,] possiblesMoves() //retorna a matriz com os possiveis movimentos
         {
@@ -65,6 +74,31 @@ namespace Chess
             if (Tray.validPosition(pos) && canMove(pos))
             {
                 mat[pos.Line, pos.Column] = true;
+            }
+
+            // JOGADAS ESPECIAIS: ROQUE
+
+            if(QtMovement == 0 && !game.Check)
+            {
+                //roque pequeno
+                Position T1 = new Position(Position.Line, Position.Column + 3);
+                if(rookTest(T1))
+                {
+                    Position p1 = new Position(Position.Line, Position.Column + 1); //uma casa a direita do rei
+                    Position p2 = new Position(Position.Line, Position.Column + 2); //duas casas a direita do rei
+                    if (Tray.getPiece(p1) == null && Tray.getPiece(p2) == null)
+                        mat[Position.Line, Position.Column + 2] = true;
+                }
+                //roque grande
+                Position T2 = new Position(Position.Line, Position.Column - 4);
+                if (rookTest(T2))
+                {
+                    Position p1 = new Position(Position.Line, Position.Column - 1); //uma casa a direita do rei
+                    Position p2 = new Position(Position.Line, Position.Column - 2); //duas casas a direita do rei
+                    Position p3 = new Position(Position.Line, Position.Column - 3); //tres casas a direita do rei
+                    if (Tray.getPiece(p1) == null && Tray.getPiece(p2) == null && Tray.getPiece(p3) == null)
+                        mat[Position.Line, Position.Column - 2] = true;
+                }
             }
             return mat;
         }

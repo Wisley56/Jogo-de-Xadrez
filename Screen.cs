@@ -87,6 +87,10 @@ namespace Xadrez___Console
             string s = Console.ReadLine();
             char column = s[0];
             int line = int.Parse(s[1] + "");
+            if( column.GetType() !=  typeof(char) ) 
+            {
+                throw new FormatException("Invalid format!!");
+            }
             return new ChessPosition(column, line);
         }
         public static void printCapturedPieces(ChessGame game) //imprime as peças capturadas

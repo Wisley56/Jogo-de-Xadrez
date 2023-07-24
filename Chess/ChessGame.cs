@@ -2,6 +2,7 @@
 using Board;
 using System.Collections.Generic;
 using System.Net.NetworkInformation;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Chess
 {
@@ -35,6 +36,28 @@ namespace Chess
             Tab.changePiece(p, destiny); //coloca a peça p na posiçao de destino
             if(capturedPiece != null)
                 Captureds.Add(capturedPiece);
+
+            //JOGADAS ESPECIAIS
+
+            //roque pequeno
+            if(p is King && destiny.Column == origin.Column + 2)
+            {
+                Position originT = new Position(origin.Line, origin.Column + 3);
+                Position destinyT = new Position(origin.Line, origin.Column + 1);
+                Piece T = Tab.removePiece(originT);
+                T.increaseMovement();
+                Tab.changePiece(T, destinyT);
+            }
+
+            //roque grande
+            if (p is King && destiny.Column == origin.Column - 2)
+            {
+                Position originT = new Position(origin.Line, origin.Column - 4);
+                Position destinyT = new Position(origin.Line, origin.Column - 1);
+                Piece T = Tab.removePiece(originT);
+                T.increaseMovement();
+                Tab.changePiece(T, destinyT);
+            }
             return capturedPiece;
         }
         public void undoMove(Position origin, Position destiny, Piece capturedPiece) //desfaz o movimento
@@ -47,6 +70,27 @@ namespace Chess
                 Captureds.Remove(capturedPiece);
             }
             Tab.changePiece(p, origin);
+
+            //JOGADAS ESPECIAIS
+
+            //roque pequeno
+            if (p is King && destiny.Column == origin.Column + 2)
+            {
+                Position originT = new Position(origin.Line, origin.Column + 3);
+                Position destinyT = new Position(destiny.Line, destiny.Column + 1);
+                Piece T = Tab.removePiece(destinyT);
+                T.decrementMovement();
+                Tab.changePiece(T, originT);
+            }
+            //roque grande
+            if (p is King && destiny.Column == origin.Column - 2)
+            {
+                Position originT = new Position(origin.Line, origin.Column - 4);
+                Position destinyT = new Position(destiny.Line, destiny.Column - 1);
+                Piece T = Tab.removePiece(destinyT);
+                T.increaseMovement();
+                Tab.changePiece(T, originT);
+            }
         }
         public void performsMoves(Position origin, Position destiny) //realiza a jogada na partida
         {
@@ -57,11 +101,17 @@ namespace Chess
                 throw new TrayExceptions("You cannot put yourself in check!");
             }
             if (isInCheck(rivalColor(PlayerCurrent))) //verifica se o jogador adversario esta em xeque
+            {
                 Check = true;
+                makeSoundCheck();
+            }
             else
                 Check = false;
             if (checkmateTest(rivalColor(PlayerCurrent))) //verifica se o jogador adversario esta em xequemate para finalizar o jogo
+            {
+                makeSoundCheckmate();
                 End = true;
+            }
             else
             {
                 Shift++;
@@ -96,7 +146,8 @@ namespace Chess
             Pieces.Add(piece);
         }
         private void positionInitial() //metodo para iniciar as peças nas devidas posiçoes
-        {
+        { 
+
             putNewPart('a', 2, new Pawn(Color.White, Tab));
             putNewPart('b',2, new Pawn(Color.White, Tab));
             putNewPart('c', 2, new Pawn(Color.White, Tab));
@@ -112,7 +163,7 @@ namespace Chess
             putNewPart('c', 1, new Bishop(Color.White, Tab));
             putNewPart('f', 1, new Bishop(Color.White, Tab));
             putNewPart('d', 1, new Queen(Color.White, Tab));
-            putNewPart('e', 1, new King(Color.White, Tab));
+            putNewPart('e', 1, new King(Color.White, Tab, this));
 
             putNewPart('a', 7, new Pawn(Color.Black, Tab));
             putNewPart('b', 7, new Pawn(Color.Black, Tab));
@@ -129,7 +180,7 @@ namespace Chess
             putNewPart('c', 8, new Bishop(Color.Black, Tab));
             putNewPart('f', 8, new Bishop(Color.Black, Tab));
             putNewPart('d', 8, new Queen(Color.Black, Tab));
-            putNewPart('e', 8, new King(Color.Black, Tab));
+            putNewPart('e', 8, new King(Color.Black, Tab, this));
         }
         public HashSet<Piece> capturedPieces(Color c) //retorna o conjunto de peças capturadas em jogo da cor escolhida
         {
@@ -206,6 +257,19 @@ namespace Chess
                 }
             }
             return true;
+        }
+
+        public static void makeSoundCheck() //funcao para emitir um toque se for xeque
+        {
+            int hz = 1000; //frequencia
+            int ms = 500; //milissegundos
+            Console.Beep(hz, ms);
+        }
+        public static void makeSoundCheckmate() //funcao para emitir um toque se for xequemate
+        {
+            int hz = 950; //frequencia
+            int ms = 500; //milissegundos
+            Console.Beep(hz, ms);
         }
     }
 }

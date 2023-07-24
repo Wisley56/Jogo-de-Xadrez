@@ -42,7 +42,7 @@ namespace Xadrez___Console
                     catch (TrayExceptions e)
                     {
                         Console.WriteLine(e.Message);
-                        Console.ReadLine();
+                        Console.ReadKey();
                     }
                 }
             }
@@ -50,7 +50,7 @@ namespace Xadrez___Console
             {
                 Console.WriteLine(e.Message);
             }
-            Console.ReadLine();
+            Console.ReadKey();
         }
     }
 }
