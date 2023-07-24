@@ -11,8 +11,9 @@ namespace Xadrez___Console
             Console.BackgroundColor = ConsoleColor.Blue;
 
                 ChessGame game = new ChessGame();
-
-                while(!game.End)
+            try
+            {
+                while (!game.End)
                 {
                     try
                     {
@@ -38,12 +39,18 @@ namespace Xadrez___Console
 
                         game.performsMoves(origin, destiny);
                     }
-                    catch(TrayExceptions e)
+                    catch (TrayExceptions e)
                     {
                         Console.WriteLine(e.Message);
                         Console.ReadLine();
                     }
                 }
+            }
+            catch(TrayExceptions e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            Console.ReadLine();
         }
     }
 }

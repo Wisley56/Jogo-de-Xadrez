@@ -83,7 +83,7 @@ namespace Chess
             if (!Tab.getPiece(origin).canMoveTo(destiny))
                 throw new TrayExceptions("Invalid target position!");
         }
-        private void playerChange()
+        private void playerChange() //mudar jogador
         {
             if (PlayerCurrent == Color.White)
                 PlayerCurrent = Color.Black;

@@ -1,5 +1,4 @@
 ﻿using Board;
-using Chess;
 
 namespace Chess
 {
@@ -10,10 +9,10 @@ namespace Chess
         {
             return "P";
         }
-        private bool rivalExist(Position pos) //verifica se tem inimigo para comer a peça
+        public bool canMove(Position pos) //verifica se tem inimigo para comer a peça
         {
             Piece p = Tray.getPiece(pos);
-            return p != null || p.Color != Color;
+            return p != null && p.Color != Color;
         }
         private bool free(Position pos)
         {
@@ -23,7 +22,7 @@ namespace Chess
         {
             bool[,] mat = new bool[Tray.Lines, Tray.Columns];
             Position pos = new Position(0, 0);
-            pos.setPositon(Position.Line - 2, Position.Column);
+
              if(Color == Board.Color.White)
              {
                 pos.setPositon(Position.Line - 1, Position.Column);
@@ -32,21 +31,22 @@ namespace Chess
                     mat[pos.Line, pos.Column] = true;
                 }
                 pos.setPositon(Position.Line - 2, Position.Column);
-                if (Tray.validPosition(pos) && free(pos) && QtMovement == 0)
+                Position p2 = new Position(Position.Line - 1, Position.Column);
+                if (Tray.validPosition(p2) && free(p2) && Tray.validPosition(pos) && free(pos) && QtMovement == 0)
                 {
                     mat[pos.Line, pos.Column] = true;
                 }
                 pos.setPositon(Position.Line - 1, Position.Column - 1);
-                if (Tray.validPosition(pos) && rivalExist(pos))
+                if (Tray.validPosition(pos) && canMove(pos))
                 {
                     mat[pos.Line, pos.Column] = true;
                 }
                 pos.setPositon(Position.Line - 1, Position.Column + 1);
-                if (Tray.validPosition(pos) && rivalExist(pos))
+                if (Tray.validPosition(pos) && canMove(pos))
                 {
                     mat[pos.Line, pos.Column] = true;
                 }
-            }
+             }
             else
             {
                 pos.setPositon(Position.Line + 1, Position.Column);
@@ -55,17 +55,18 @@ namespace Chess
                     mat[pos.Line, pos.Column] = true;
                 }
                 pos.setPositon(Position.Line + 2, Position.Column);
-                if (Tray.validPosition(pos) && free(pos) && QtMovement == 0)
+                Position p2 = new Position(Position.Line + 1, Position.Column);
+                if (Tray.validPosition(p2) && free(p2) && Tray.validPosition(pos) && free(pos) && QtMovement == 0)
                 {
                     mat[pos.Line, pos.Column] = true;
                 }
                 pos.setPositon(Position.Line + 1, Position.Column - 1);
-                if (Tray.validPosition(pos) && rivalExist(pos))
+                if (Tray.validPosition(pos) && canMove(pos))
                 {
                     mat[pos.Line, pos.Column] = true;
                 }
                 pos.setPositon(Position.Line + 1, Position.Column + 1);
-                if (Tray.validPosition(pos) && rivalExist(pos))
+                if (Tray.validPosition(pos) && canMove(pos))
                 {
                     mat[pos.Line, pos.Column] = true;
                 }
