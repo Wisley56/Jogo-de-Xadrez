@@ -135,6 +135,21 @@ namespace Chess
                 undoMove(origin, destiny, capturedPiece);
                 throw new TrayExceptions("You cannot put yourself in check!");
             }
+            //JOGADA ESPECIAL DE PROMOCAO
+
+            Piece p = Tab.getPiece(destiny); //peça movida
+            if(p is Pawn)
+            {
+                if((p.Color == Color.White && destiny.Line == 0) || (p.Color == Color.Black && destiny.Line == 7))
+                {
+                    p = Tab.removePiece(destiny);
+                    Pieces.Remove(p);
+                    Piece queen = new Queen(p.Color, Tab);
+                    Tab.changePiece(queen, destiny);
+                    Pieces.Add(queen);
+                }
+            }
+
             if (isInCheck(rivalColor(PlayerCurrent))) //verifica se o jogador adversario esta em xeque
             {
                 Check = true;
@@ -152,8 +167,6 @@ namespace Chess
                 Shift++;
                 playerChange();
             }
-
-            Piece p = Tab.getPiece(destiny); //peça movida
 
             //JOGADA ESPECIAL: EN PASANT
 
